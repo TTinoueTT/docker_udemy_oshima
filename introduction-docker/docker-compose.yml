@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:1.21.6
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - sinatra
+  # docker run -v $PWD/Sinatra:/opt/myapp \
+  #          -w /opt/myapp \
+  #          -d \
+  #          -p 4567:4567 \
+  #          --net my-net \
+  #          my-ruby:dockerfile \
+  #          ruby myapp.rb \
+  #          -o 0.0.0.0
+  sinatra:
+    build: ./sinatra #独自のイメージ(Dockerfileを利用)の場合はDockerfileの相対パス
+    command: ruby myapp.rb -o 0.0.0.0
+    ports:
+      - 4567:4567
+    volumes:
+      - ./sinatra:/opt/myapp
+    working_dir: /opt/myapp
+    depends_on: # mysqlコンテナの後にこのコンテナを起動させる
+      - mysql
+
+  # docker run --name my-sql \
+  #          -e MYSQL_ROOT_PASSWORD=rootpassword \
+  #          -d \
+  #          --platform linux/x86_64 \
+  #          -v $PWD/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d \
+  #          -v $PWD/Mysql/conf.d/charset.cnf:/etc/mysql/conf.d/charset.cnf \
+  #          --net my-net mysql:8.0.29
+  mysql:
+    image: mysql:8.0.29
+    platform: linux/x86_64
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql/conf.d/charset.cnf:/etc/mysql/conf.d/charset.cnf

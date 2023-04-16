@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>タスク管理アプリケーション</title>
+  </head>
+  <style>
+    .table {
+      border: 1px solid;
+    }
+
+    .thead,
+    .tr {
+      display: flex;
+      border: 1px solid;
+    }
+
+    .thead > .th,
+    .tr > .td {
+      flex: 1;
+      border: 1px solid;
+    }
+
+    .th {
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+  <body>
+    <h1>タスク管理アプリケーション</h1>
+    <input id="title_input" type="text" />
+    <button id="add_button">追加</button>
+
+    <h2>タスク一覧</h2>
+    <div class="table">
+      <div class="thead">
+        <div class="th">タイトル</div>
+        <div class="th">作成日時</div>
+      </div>
+      <div class="tbody" id="tasks_table_body"></div>
+    </div>
+    <p id="message"></p>
+    <p>
+      <script src="main.js"></script>
+    </p>
+  </body>
+</html>
